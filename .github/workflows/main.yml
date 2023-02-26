@@ -27,7 +27,7 @@ jobs:
       with:
         node-version: 16
         cache: 'yarn'
-        cache-dependency-path: ${{matrix.type}}/yarn.lock
+        cache-dependency-path: ./yarn.lock
     - run: git show-ref
     - run: git log 
     - name: "Is this branch rebased"
