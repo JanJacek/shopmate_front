@@ -1,9 +1,11 @@
 <template>
   <div>
-    <!-- place for login panel -->
+    <p>helllo</p>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const test = '';
+</script>
 
 <style scoped></style>
