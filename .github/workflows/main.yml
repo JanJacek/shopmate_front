@@ -1,10 +1,9 @@
-# Compact Code Quality Check. 
+# Compact Code Quality Check.
 # It checks:
 # - Is branch rebased
 # - Is branch that is beeing added (merged - right branch):
 #   - NOT splited (selfstanding) - not created with two branches
 #   - Has each commit linted and formated
-
 
 name: Compact code quality and rebase check
 
@@ -12,7 +11,7 @@ on:
   workflow_dispatch:
   pull_request:
     branches:
-     - main
+      - main
 jobs:
   compact-code-quality:
     runs-on: ubuntu-latest
@@ -20,25 +19,25 @@ jobs:
       matrix:
         type: [shopmate_front]
     steps:
-    - uses: actions/checkout@v3
-      with:
-        fetch-depth: 50
-   # - uses: actions/setup-node@v3
-   #   with:
-      # node-version: 16
-      # cache: 'yarn'
-      # cache-dependency-path: ./yarn.lock
-    - run: git show-ref
-    - run: git log 
-    - name: "Is this branch rebased"
-      run: |
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 50
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'yarn'
+          cache-dependency-path: ${{matrix.type}}/yarn.lock
+      - run: git show-ref
+      - run: git log
+      - name: 'Is this branch rebased'
+        run: |
           LEFTGC=$(git log --pretty=%P -1 HEAD | awk '{print $1}' )
           echo "main branch last commit: " $LEFTGC
           RIGHTGC=$(git log --pretty=%P -1 HEAD | awk '{print $2}' )
           echo "merged branch last commit: " $RIGHTGC
           git merge-base --is-ancestor $LEFTGC  $RIGHTGC
-    - name: "Is each commit pretty in ${{matrix.type}} code"
-      run: |
+      - name: 'Is each commit pretty in ${{matrix.type}} code'
+        run: |
           yarn --prefer-offline --frozen-lockfile
           LEFTGC=$(git log --pretty=%P -1 HEAD | awk '{print $1}' )
           PARENT=$(git log --pretty=%P -1 HEAD | awk '{print $2}' )
@@ -59,4 +58,4 @@ jobs:
             fi
             PARENT=$(git log --pretty=%P -1 HEAD | awk '{print $1}' )
           done
-      working-directory: ${{matrix.type}}
+        working-directory: ${{matrix.type}}
