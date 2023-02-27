@@ -2,6 +2,7 @@
 .thumbs.db
 node_modules
 
+yarn.lock
 # Quasar core related directories
 .quasar
 /dist
